@@ -1,8 +1,9 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field
 from datetime import datetime
 
+
 class UserBase(BaseModel):
-    name: str
+    name: str = Field(..., min_length=2, max_length=100)
     email: EmailStr
 
 class UserCreate(UserBase):

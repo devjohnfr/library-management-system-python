@@ -2,6 +2,8 @@ from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from app.repositories.user_repository import UserRepository
 from app.schemas.user_schema import UserCreate
+from fastapi import HTTPException
+
 
 class UserService:
 
@@ -45,3 +47,21 @@ class UserService:
             )
 
         return user
+
+    @staticmethod
+    def update_user(db, user_id, user_data):
+        updated_user = UserRepository.update(db, user_id, user_data)
+
+        if not updated_user:
+            raise HTTPException(status_code=404, detail="User not found")
+
+        return updated_user
+
+    @staticmethod
+    def delete_user(db, user_id):
+        deleted_user = UserRepository.delete(db, user_id)
+
+        if not deleted_user:
+            raise HTTPException(status_code=404, detail="User not found")
+
+        return {"message": "User deleted successfully"}
